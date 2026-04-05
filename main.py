@@ -121,6 +121,60 @@ def delete_boat():
     return render_template('boats_search.html', boats=None, error=None, success=f'Boat {boat_id} deleted successfully.')
 
 
+@app.route('/update', methods=['GET'])
+def update_boat_get():
+    return render_template('boats_update.html', boat=None, error=None, success=None)
+
+
+@app.route('/update', methods=['POST'])
+def update_boat_post():
+    form = request.form
+    if not form.get('id'):
+        return render_template('boats_update.html', boat=None, error='Boat ID is required.', success=None)
+
+    try:
+        boat_id = int(form['id'])
+    except ValueError:
+        return render_template('boats_update.html', boat=None, error='Boat ID must be a number.', success=None)
+
+    boat = conn.execute(text('SELECT * FROM boats WHERE id = :id'), {'id': boat_id}).first()
+    if not boat:
+        return render_template('boats_update.html', boat=None, error='Boat not found.', success=None)
+
+    updates = []
+    params = {'id': boat_id}
+
+    if form.get('name'):
+        updates.append('name = :name')
+        params['name'] = form['name']
+
+    if form.get('type'):
+        updates.append('type = :type')
+        params['type'] = form['type']
+
+    if form.get('owner_id'):
+        try:
+            params['owner_id'] = int(form['owner_id'])
+            updates.append('owner_id = :owner_id')
+        except ValueError:
+            return render_template('boats_update.html', boat=boat, error='Owner ID must be a number.', success=None)
+
+    if form.get('rental_price'):
+        try:
+            params['rental_price'] = float(form['rental_price'])
+            updates.append('rental_price = :rental_price')
+        except ValueError:
+            return render_template('boats_update.html', boat=boat, error='Rental price must be numeric.', success=None)
+
+    if not updates:
+        return render_template('boats_update.html', boat=boat, error='Enter at least one field to update.', success=None)
+
+    sql = 'UPDATE boats SET ' + ', '.join(updates) + ' WHERE id = :id'
+    conn.execute(text(sql), params)
+    updated_boat = conn.execute(text('SELECT * FROM boats WHERE id = :id'), {'id': boat_id}).first()
+
+    return render_template('boats_update.html', boat=updated_boat, error=None, success='Boat updated successfully.')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
