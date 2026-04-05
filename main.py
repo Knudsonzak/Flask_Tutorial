@@ -101,5 +101,26 @@ def search_boats_request():
 
     return render_template('boats_search.html', boats=boats, error=None, success=f'Found {len(boats)} boat(s).')
 
+
+@app.route('/delete', methods=['POST'])
+def delete_boat():
+    boat_id = request.form.get('delete_id')
+    if not boat_id:
+        return render_template('boats_search.html', boats=None, error='No boat ID specified for deletion.', success=None)
+
+    try:
+        boat_id = int(boat_id)
+    except ValueError:
+        return render_template('boats_search.html', boats=None, error='Invalid boat ID.', success=None)
+
+    boat = conn.execute(text('SELECT * FROM boats WHERE id = :id'), {'id': boat_id}).first()
+    if not boat:
+        return render_template('boats_search.html', boats=None, error='Boat not found.', success=None)
+
+    conn.execute(text('DELETE FROM boats WHERE id = :id'), {'id': boat_id})
+    return render_template('boats_search.html', boats=None, error=None, success=f'Boat {boat_id} deleted successfully.')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

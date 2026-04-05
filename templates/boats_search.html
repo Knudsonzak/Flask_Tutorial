@@ -98,6 +98,10 @@
                                 <li><strong>Owner ID:</strong> {{ boat['owner_id'] }}</li>
                                 <li><strong>Rental price:</strong> {{ boat['rental_price'] }}</li>
                             </ul>
+                            <form action="/delete" method="POST" style="margin-top: 14px;">
+                                <input type="hidden" name="delete_id" value="{{ boat['id'] }}">
+                                <button type="submit" class="input_submit" style="background-color: #e63946;">Delete</button>
+                            </form>
                         </div>
                     {% endfor %}
                 {% else %}
