@@ -1,4 +1,12 @@
 {% extends "base.html" %}
 {% block body %}
-    <h1> Welcome! </h1>
+    <div style="text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; min-height: 70vh; display: flex; flex-direction: column; justify-content: center;">
+        <h1 style="font-size: 3rem; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🎣 Welcome to FishBoat Rentals! 🎣</h1>
+        <p style="font-size: 1.3rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+            Discover the perfect fishing boat for your next adventure. Whether you're a seasoned angler or just starting out, our fleet of premium fishing boats is ready to help you catch the big one!
+        </p>
+        <a href="{{ url_for('get_boats') }}" style="display: inline-block; padding: 15px 30px; background: #f59e0b; color: #1e3a8a; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: transform 0.2s;">
+            Browse Fishing Boats →
+        </a>
+    </div>
 {% endblock %}

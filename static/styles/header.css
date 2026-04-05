@@ -2,8 +2,22 @@
   display: inline-block;
 }
 
-.logo {
-  width: 60px;
+.logo-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #f8f9fa;
+}
+
+.logo-icon {
+  font-size: 1.6rem;
+}
+
+.logo-text {
+  text-transform: uppercase;
 }
 
 header li {
@@ -109,7 +123,7 @@ body {
   display: grid;
   grid-template-rows: auto 1fr auto;
   font-size: 15px;
-  background-color: #eef2f7;
+  background-color: #e0f2fe;
   min-height: 100vh;
 }
 
@@ -118,7 +132,7 @@ body {
   flex-flow: row wrap;
   padding: 36px 30px 24px 30px;
   color: #f8f9fa;
-  background-color: #1d3557;
+  background-color: #0f172a;
 }
 
 .footer > * {

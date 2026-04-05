@@ -5,14 +5,29 @@
         padding: 0 20px;
     }
 
+    .form-card {
+        background: white;
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+        margin-bottom: 24px;
+    }
+
+    .form-card h2 {
+        margin-top: 0;
+        margin-bottom: 18px;
+        color: #1d3557;
+    }
+
     .input_field {
       width: 100%;
-      padding: 12px 20px;
-      margin: 8px 0;
+      padding: 14px 20px;
+      margin: 10px 0;
       display: inline-block;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 12px;
       box-sizing: border-box;
+      background: #fafafa;
     }
 
     .input_submit {
@@ -20,14 +35,31 @@
       background-color: #4CAF50;
       color: white;
       padding: 14px 20px;
-      margin: 8px 0;
+      margin: 18px 0 0;
       border: none;
-      border-radius: 4px;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: 700;
     }
 
     .input_submit:hover {
       background-color: #45a049;
+    }
+
+    .message {
+      margin-bottom: 16px;
+      padding: 14px;
+      border-radius: 12px;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
     }
 
     .boat-card {
@@ -57,32 +89,35 @@
 {% extends "base.html" %}
 {% block body %}
     <div class="body">
-        {% if error %}
-            <h2 style="color: #c0392b;">{{ error }}</h2>
-        {% endif %}
+        <div class="form-card">
+            {% if error %}
+                <div class="message error">{{ error }}</div>
+            {% endif %}
 
-        {% if success %}
-            <h2 style="color: #2d862d;">{{ success }}</h2>
-        {% endif %}
+            {% if success %}
+                <div class="message success">{{ success }}</div>
+            {% endif %}
 
-        <form action="/update" method="POST">
-            <input type="number" name="id" placeholder="Boat ID (required)" class="input_field" required>
-            <input type="text" name="name" placeholder="New boat name" class="input_field">
-            <input type="text" name="type" placeholder="New boat type" class="input_field">
-            <input type="number" name="owner_id" placeholder="New owner ID" class="input_field">
-            <input type="number" name="rental_price" placeholder="New rental price" class="input_field" step="0.0001">
-            <input type="submit" value="Update Boat" class="input_submit">
-        </form>
+            <h2>Update Fishing Boat</h2>
+            <form action="/update" method="POST">
+                <input type="number" name="id" placeholder="Boat ID (required)" class="input_field" required>
+                <input type="text" name="name" placeholder="New boat name" class="input_field">
+                <input type="text" name="type" placeholder="New boat type" class="input_field">
+                <input type="number" name="owner_id" placeholder="New owner ID" class="input_field">
+                <input type="number" name="rental_price" placeholder="New daily rate" class="input_field" step="0.0001">
+                <input type="submit" value="Update Fishing Boat" class="input_submit">
+            </form>
+        </div>
 
         {% if boat %}
             <div class="boat-card">
-                <h3>Updated boat details</h3>
+                <h3>Updated fishing boat details</h3>
                 <ul>
                     <li><strong>ID:</strong> {{ boat['id'] }}</li>
                     <li><strong>Name:</strong> {{ boat['name'] }}</li>
                     <li><strong>Type:</strong> {{ boat['type'] }}</li>
                     <li><strong>Owner ID:</strong> {{ boat['owner_id'] }}</li>
-                    <li><strong>Rental price:</strong> {{ boat['rental_price'] }}</li>
+                    <li><strong>Daily Rate:</strong> ${{ boat['rental_price'] }}</li>
                 </ul>
             </div>
         {% endif %}

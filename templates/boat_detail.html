@@ -48,7 +48,7 @@
 {% extends "base.html" %}
 {% block body %}
     <section class="detail-page">
-        <a href="/boats/" class="back-link">← Back to boats</a>
+        <a href="{{ url_for('get_boats') }}" class="back-link">← Back to boats</a>
 
         {% if error %}
             <div class="detail-card">
@@ -57,12 +57,12 @@
             </div>
         {% else %}
             <div class="detail-card">
-                <h2>{{ boat['name'] }}</h2>
+                <h2>{{ boat['name'] }} 🐠</h2>
                 <ul>
                     <li><strong>Boat ID:</strong> {{ boat['id'] }}</li>
                     <li><strong>Type:</strong> {{ boat['type'] }}</li>
                     <li><strong>Owner ID:</strong> {{ boat['owner_id'] }}</li>
-                    <li><strong>Rental Price:</strong> {{ boat['rental_price'] }}</li>
+                    <li><strong>Daily Rate:</strong> ${{ boat['rental_price'] }}</li>
                 </ul>
             </div>
         {% endif %}

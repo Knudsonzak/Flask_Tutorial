@@ -5,14 +5,29 @@
         padding: 0 20px;
     }
 
+    .form-card {
+        background: white;
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+        margin-bottom: 24px;
+    }
+
+    .form-card h2 {
+        margin-top: 0;
+        margin-bottom: 18px;
+        color: #1d3557;
+    }
+
     .input_field {
       width: 100%;
-      padding: 12px 20px;
-      margin: 8px 0;
+      padding: 14px 20px;
+      margin: 10px 0;
       display: inline-block;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 12px;
       box-sizing: border-box;
+      background: #fafafa;
     }
 
     .input_submit {
@@ -20,14 +35,31 @@
       background-color: #4CAF50;
       color: white;
       padding: 14px 20px;
-      margin: 8px 0;
+      margin: 18px 0 0;
       border: none;
-      border-radius: 4px;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: 700;
     }
 
     .input_submit:hover {
       background-color: #45a049;
+    }
+
+    .message {
+      margin-bottom: 16px;
+      padding: 14px;
+      border-radius: 12px;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
     }
 
     .search-results {
@@ -67,36 +99,39 @@
 {% extends "base.html" %}
 {% block body %}
     <div class="body">
-        {% if error %}
-            <h2 style="color: #c0392b;">{{ error }}</h2>
-        {% endif %}
+        <div class="form-card">
+            {% if error %}
+                <div class="message error">{{ error }}</div>
+            {% endif %}
 
-        {% if success %}
-            <h2 style="color: #2d862d;">{{ success }}</h2>
-        {% endif %}
+            {% if success %}
+                <div class="message success">{{ success }}</div>
+            {% endif %}
 
-        <form action="/search" method="POST">
-            <input type="number" name="id" placeholder="ID" class="input_field">
-            <input type="text" name="name" placeholder="Boat name" class="input_field">
-            <input type="text" name="type" placeholder="Boat type" class="input_field">
-            <input type="number" name="owner_id" placeholder="Owner ID" class="input_field">
-            <input type="number" name="rental_price" placeholder="Rental price" class="input_field" step="0.0001">
-            <input type="submit" value="Search" class="input_submit">
-        </form>
+            <h2>Find Your Fishing Boat</h2>
+            <form action="/search" method="POST">
+                <input type="number" name="id" placeholder="Boat ID" class="input_field">
+                <input type="text" name="name" placeholder="Boat name (e.g., SeaMaster)" class="input_field">
+                <input type="text" name="type" placeholder="Boat type (e.g., Center Console)" class="input_field">
+                <input type="number" name="owner_id" placeholder="Owner ID" class="input_field">
+                <input type="number" name="rental_price" placeholder="Daily rate" class="input_field" step="0.0001">
+                <input type="submit" value="Find My Fishing Boat" class="input_submit">
+            </form>
+        </div>
 
         {% if boats is not none %}
             <div class="search-results">
-                <h3 class="results-heading">Search Results</h3>
+                <h3 class="results-heading">Your Fishing Boat Matches</h3>
 
                 {% if boats | length > 0 %}
                     {% for boat in boats %}
                         <div class="boat-card">
-                            <h3>{{ boat['name'] or 'Unnamed boat' }}</h3>
+                            <h3>{{ boat['name'] or 'Unnamed boat' }} 🐟</h3>
                             <ul>
                                 <li><strong>ID:</strong> {{ boat['id'] }}</li>
                                 <li><strong>Type:</strong> {{ boat['type'] }}</li>
                                 <li><strong>Owner ID:</strong> {{ boat['owner_id'] }}</li>
-                                <li><strong>Rental price:</strong> {{ boat['rental_price'] }}</li>
+                                <li><strong>Daily Rate:</strong> ${{ boat['rental_price'] }}</li>
                             </ul>
                             <form action="/delete" method="POST" style="margin-top: 14px;">
                                 <input type="hidden" name="delete_id" value="{{ boat['id'] }}">

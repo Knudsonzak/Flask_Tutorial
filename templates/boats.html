@@ -120,26 +120,26 @@
 
     <section class="boats-page">
         <div class="boats-header">
-            <h2>Boat Rental Catalog</h2>
-            <p>Browse the available boats in our fleet. Each record is shown as a clean card to make it easy to compare boat details.</p>
+            <h2>🏄‍♂️ Our Fishing Boat Fleet 🏄‍♂️</h2>
+            <p>Explore our collection of top-notch fishing boats, from sleek center consoles to spacious pontoons. Each boat is equipped for the ultimate fishing experience on the water.</p>
         </div>
 
         {% if boats | length > 0 %}
             <div class="boats-grid">
                 {% for boat in boats %}
                     <a href="{{ '/boat/' + boat['id']|string }}" class="boat-card boat-link">
-                        <h4>{{ boat['name'] }}</h4>
+                        <h4>{{ boat['name'] }} 🐟</h4>
                         <ul>
                             <li><span>Boat ID:</span> {{ boat['id'] }}</li>
                             <li><span>Type:</span> {{ boat['type'] }}</li>
                             <li><span>Owner ID:</span> {{ boat['owner_id'] }}</li>
-                            <li><span>Rental Price:</span> {{ boat['rental_price'] }}</li>
+                            <li><span>Daily Rate:</span> ${{ boat['rental_price'] }}</li>
                         </ul>
                     </a>
                 {% endfor %}
             </div>
         {% else %}
-            <div class="no-data">No boats are available at the moment. Check back soon.</div>
+            <div class="no-data">No fishing boats are available right now. Check back soon for new additions! 🎣</div>
         {% endif %}
 
         <div class="pagination-bar">

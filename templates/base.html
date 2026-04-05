@@ -10,14 +10,17 @@
     <header>
       <div class="topBar">
         <div class="">
-          <img src="{{url_for('static',filename = 'images/logo.jpg')}}" alt="Logo" class="logo">
+          <div class="logo-brand">
+            <span class="logo-icon">🐟</span>
+            <span class="logo-text">FishBoat Rentals</span>
+          </div>
           <ul class="barItem">
 
             <li><a href="/">HOME</a></li>
-            <li><a href="/boats/">BOATS</a></li>
-            <li><a href="/search">SEARCH</a></li>
-            <li><a href="/create">CREATE</a></li>
-            <li><a href="/update">UPDATE</a></li>
+            <li><a href="{{ url_for('get_boats') }}">FISHING BOATS</a></li>
+            <li><a href="{{ url_for('search_boats') }}">SEARCH</a></li>
+            <li><a href="{{ url_for('create_get_request') }}">ADD BOAT</a></li>
+            <li><a href="{{ url_for('update_boat_get') }}">UPDATE</a></li>
           </ul>
         </div>
 
@@ -39,62 +42,63 @@
     
     <footer class="footer">
       <div class="footer__addr">
-        <h1 class="footer__logo">A very cool looking footer!</h1>
+        <h1 class="footer__logo">FishBoat Rentals 🐟</h1>
 
         <h2>Contact</h2>
 
         <address>
-          5534 Somewhere In. The World 22193-10212<br>
+          Ready to catch the big one?<br>
+          Book your fishing boat today!
 
-          <a class="footer__btn" href="mailto:example@gmail.com">Email Us</a>
+          <a class="footer__btn" href="mailto:book@fishboatrentals.com">Book Now</a>
         </address>
       </div>
 
       <ul class="footer__nav">
         <li class="nav__item">
-          <h2 class="nav__title">Media</h2>
+          <h2 class="nav__title">Fishing Gear</h2>
 
           <ul class="nav__ul">
             <li>
-              <a href="#">Online</a>
+              <a href="#">Rods & Reels</a>
             </li>
 
             <li>
-              <a href="#">Print</a>
+              <a href="#">Lures & Bait</a>
             </li>
 
             <li>
-              <a href="#">Alternative Ads</a>
+              <a href="#">Safety Equipment</a>
             </li>
           </ul>
         </li>
 
         <li class="nav__item nav__item--extra">
-          <h2 class="nav__title">Technology</h2>
+          <h2 class="nav__title">Boat Types</h2>
 
           <ul class="nav__ul nav__ul--extra">
             <li>
-              <a href="#">Hardware Design</a>
+              <a href="#">Bass Boats</a>
             </li>
 
             <li>
-              <a href="#">Software Design</a>
+              <a href="#">Center Consoles</a>
             </li>
 
             <li>
-              <a href="#">Digital Signage</a>
+              <a href="#">Pontoons</a>
             </li>
 
             <li>
-              <a href="#">Automation</a>
+              <a href="#">Jon Boats</a>
             </li>
 
             <li>
-              <a href="#">Artificial Intelligence</a>
+              <a href="#">Kayaks</a>
             </li>
 
             <li>
-              <a href="#">IoT</a>
+              <a href="#">Canoes</a>
             </li>
           </ul>
         </li>
@@ -119,10 +123,10 @@
       </ul>
 
       <div class="legal">
-        <p>&copy; 2019 Something. All rights reserved.</p>
+        <p>&copy; 2026 FishBoat Rentals. All rights reserved.</p>
 
         <div class="legal__links">
-          <span>Made with <span class="heart">♥</span> remotely from Anywhere</span>
+          <span>Made with <span class="heart">🎣</span> for anglers everywhere</span>
         </div>
       </div>
     </footer>
