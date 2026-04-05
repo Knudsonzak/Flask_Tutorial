@@ -48,6 +48,11 @@
         color: #1d3557;
     }
 
+    .boat-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
     .boat-card ul {
         list-style: none;
         padding: 0;
@@ -122,7 +127,7 @@
         {% if boats | length > 0 %}
             <div class="boats-grid">
                 {% for boat in boats %}
-                    <article class="boat-card">
+                    <a href="{{ '/boat/' + boat['id']|string }}" class="boat-card boat-link">
                         <h4>{{ boat['name'] }}</h4>
                         <ul>
                             <li><span>Boat ID:</span> {{ boat['id'] }}</li>
@@ -130,7 +135,7 @@
                             <li><span>Owner ID:</span> {{ boat['owner_id'] }}</li>
                             <li><span>Rental Price:</span> {{ boat['rental_price'] }}</li>
                         </ul>
-                    </article>
+                    </a>
                 {% endfor %}
             </div>
         {% else %}
