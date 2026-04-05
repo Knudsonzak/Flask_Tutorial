@@ -180,6 +180,11 @@ header li:hover {
   transition: all 0.2s ease;
 }
 
+.filter-btn.active {
+  background: #1e3a8a;
+  box-shadow: 0 10px 24px rgba(30, 58, 138, 0.25);
+}
+
 .filter-btn:hover,
 .filter-btn:focus {
   background: #1d4ed8;
@@ -227,6 +232,73 @@ header li:hover {
   opacity: 0.45;
   pointer-events: none;
   background: #f8fafc;
+}
+
+.delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  background: #dc2626;
+  color: #f8fafc;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.detail-card {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.detail-card h2 {
+  color: #0f172a;
+  margin-bottom: 1.5rem;
+}
+
+.detail-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.detail-card li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.detail-card li:last-child {
+  border-bottom: none;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #1d4ed8;
+}
+
+.detail-page {
+  padding: 2rem;
 }
 
 button.signup-button {

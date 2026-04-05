@@ -34,12 +34,12 @@
             {% set filter_prefix = filters_query + '&' if filters_query else '' %}
             <div class="sort-controls">
                 <span>Sort by:</span>
-                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=id&direction=asc" class="filter-btn">ID High</a>
-                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=id&direction=desc" class="filter-btn">ID Low</a>
-                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=name&direction=asc" class="filter-btn">Name A–Z</a>
-                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=name&direction=desc" class="filter-btn">Name Z–A</a>
-                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=price&direction=asc" class="filter-btn">Price High</a>
-                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=price&direction=desc" class="filter-btn">Price Low</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=id&direction=asc" class="filter-btn{% if order_by == 'id' and direction == 'asc' %} active{% endif %}">ID Low → High</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=id&direction=desc" class="filter-btn{% if order_by == 'id' and direction == 'desc' %} active{% endif %}">ID High → Low</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=name&direction=asc" class="filter-btn{% if order_by == 'name' and direction == 'asc' %} active{% endif %}">Name A → Z</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=name&direction=desc" class="filter-btn{% if order_by == 'name' and direction == 'desc' %} active{% endif %}">Name Z → A</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=price&direction=asc" class="filter-btn{% if order_by == 'price' and direction == 'asc' %} active{% endif %}">Price Low → High</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=price&direction=desc" class="filter-btn{% if order_by == 'price' and direction == 'desc' %} active{% endif %}">Price High → Low</a>
             </div>
         </div>
 

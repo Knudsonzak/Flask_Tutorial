@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import Column, Integer, String, Numeric, create_engine, text
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ def get_boats(page=1):
 
     allowed_columns = {
         'id': 'id',
-        'name': 'name',
+        'name': 'LOWER(name)',
         'price': 'rental_price'
     }
     allowed_directions = {'asc', 'desc'}
@@ -67,11 +67,29 @@ def get_boats(page=1):
             max_price = ''
 
     where_clause = f"WHERE {' AND '.join(filters)}" if filters else ''
-    order_clause = f"ORDER BY {allowed_columns[order_by]} {direction.upper()}"
     offset = (page - 1) * per_page
-    sql = f"SELECT * FROM boats {where_clause} {order_clause} LIMIT :limit OFFSET :offset"
-    params.update({'limit': per_page, 'offset': offset})
-    boats = conn.execute(text(sql), params).all()
+
+    if order_by == 'name':
+        sql = f"SELECT * FROM boats {where_clause}"
+        boats = conn.execute(text(sql), params).all()
+        def name_key(b):
+            if hasattr(b, '_mapping'):
+                return (b._mapping.get('name') or '').lower()
+            try:
+                return (b['name'] or '').lower()
+            except Exception:
+                return (b[1] or '').lower()
+        boats = sorted(
+            boats,
+            key=name_key,
+            reverse=(direction == 'desc')
+        )
+        boats = boats[offset: offset + per_page]
+    else:
+        order_clause = f"ORDER BY {allowed_columns[order_by]} {direction.upper()}"
+        sql = f"SELECT * FROM boats {where_clause} {order_clause} LIMIT :limit OFFSET :offset"
+        params.update({'limit': per_page, 'offset': offset})
+        boats = conn.execute(text(sql), params).all()
 
     filter_params = []
     if boat_type:
@@ -174,19 +192,19 @@ def search_boats_request():
 def delete_boat():
     boat_id = request.form.get('delete_id')
     if not boat_id:
-        return render_template('boats_search.html', boats=None, error='No boat ID specified for deletion.', success=None)
+        return redirect(url_for('get_boats'))
 
     try:
         boat_id = int(boat_id)
     except ValueError:
-        return render_template('boats_search.html', boats=None, error='Invalid boat ID.', success=None)
+        return redirect(url_for('get_boats'))
 
     boat = conn.execute(text('SELECT * FROM boats WHERE id = :id'), {'id': boat_id}).first()
     if not boat:
-        return render_template('boats_search.html', boats=None, error='Boat not found.', success=None)
+        return redirect(url_for('get_boats'))
 
     conn.execute(text('DELETE FROM boats WHERE id = :id'), {'id': boat_id})
-    return render_template('boats_search.html', boats=None, error=None, success=f'Boat {boat_id} deleted successfully.')
+    return redirect(url_for('get_boats'))
 
 
 @app.route('/update', methods=['GET'])
