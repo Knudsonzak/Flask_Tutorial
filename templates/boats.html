@@ -1,80 +1,148 @@
 <style>
-    .flex-box {
-        display: flex;
-        font-size: 16px;
-        flex-wrap: wrap;
-        width: 1140px;
-        margin: auto;
+    .boats-page {
+        max-width: 1140px;
+        margin: 30px auto;
+        padding: 0 20px;
     }
 
-    .boat {
-        min-width: 200px;
-        padding: 10px;
-    }
-
-    .pagination_bar {
-        display: flex;
-        justify-content: flex-end;
-        width: 1140px;
-        margin: auto;
-    }
-    .pagination_button {
-        font-size: 20px;
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 2px 2px 4px;
+    .boats-header {
         text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        width: 30px;
+        margin-bottom: 24px;
     }
 
-    .column {
+    .boats-header h2 {
+        margin: 0;
+        font-size: 2rem;
+        letter-spacing: 0.02em;
+    }
+
+    .boats-header p {
+        margin: 8px auto 0;
+        max-width: 720px;
+        color: #555;
+        line-height: 1.5;
+    }
+
+    .boats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+    }
+
+    .boat-card {
+        background: white;
+        border-radius: 18px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        padding: 22px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .boat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.12);
+    }
+
+    .boat-card h4 {
+        margin: 0 0 12px;
+        font-size: 1.2rem;
+        color: #1d3557;
+    }
+
+    .boat-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        color: #333;
+    }
+
+    .boat-card li {
+        margin-bottom: 8px;
+        font-size: 0.96rem;
+        line-height: 1.5;
+    }
+
+    .boat-card li span {
+        font-weight: 600;
+        color: #457b9d;
+    }
+
+    .pagination-bar {
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-        padding-top: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 28px;
+    }
+
+    .pagination-button {
+        min-width: 44px;
+        border-radius: 999px;
+        border: none;
+        background: #457b9d;
+        color: white;
+        padding: 10px 14px;
+        text-decoration: none;
+        display: inline-flex;
         align-items: center;
+        justify-content: center;
+        font-weight: 600;
+    }
+
+    .pagination-button.is-current {
+        background: #1d3557;
+        cursor: default;
+    }
+
+    .pagination-button.is-disabled {
+        background: #ccc;
+        pointer-events: none;
+        color: #666;
+    }
+
+    .no-data {
+        text-align: center;
+        width: 100%;
+        padding: 60px 0;
+        color: #666;
+        font-size: 1.1rem;
     }
 </style>
 
 {% extends "base.html" %}
 {% block body %}
-    {% set prev_page = page - 1 %}  <!-- variables in jinja --->
-    <div class="column">
-        <h3>Page {{ page }}</h3>
+    {% set prev_page = page - 1 %}
+    {% set next_page = page + 1 %}
 
-        <div class="flex-box">
-            {% for boat in boats %}
-                <div class="boat">
-                    <ul>
-                        <li>Boat id: {{ boat['id'] }}</li>
+    <section class="boats-page">
+        <div class="boats-header">
+            <h2>Boat Rental Catalog</h2>
+            <p>Browse the available boats in our fleet. Each record is shown as a clean card to make it easy to compare boat details.</p>
+        </div>
+
+        {% if boats | length > 0 %}
+            <div class="boats-grid">
+                {% for boat in boats %}
+                    <article class="boat-card">
+                        <h4>{{ boat['name'] }}</h4>
                         <ul>
-                            <li>Name: {{ boat['name'] }}</li>
-                            <li>Type: {{ boat['type'] }}</li>
-                            <li>Owner ID: {{ boat['owner_id'] }}</li>
-                            <li>Price: {{ boat['rental_price'] }}</li>
+                            <li><span>Boat ID:</span> {{ boat['id'] }}</li>
+                            <li><span>Type:</span> {{ boat['type'] }}</li>
+                            <li><span>Owner ID:</span> {{ boat['owner_id'] }}</li>
+                            <li><span>Rental Price:</span> {{ boat['rental_price'] }}</li>
                         </ul>
-                    </ul>
-                </div>
-            {% endfor %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-data">No boats are available at the moment. Check back soon.</div>
+        {% endif %}
 
-            {% if boats | length < 1 %}
-                <h1>No data available</h1>
-            {% endif %}
+        <div class="pagination-bar">
+            <a href="{{ '/boats/' + prev_page|string }}" class="pagination-button{% if page == 1 %} is-disabled{% endif %}">&lt;</a>
+            <a class="pagination-button is-current">{{ page }}</a>
+            <a href="{{ '/boats/' + next_page|string }}" class="pagination-button">{{ next_page }}</a>
+            <a href="{{ '/boats/' + (next_page + 1)|string }}" class="pagination-button">{{ next_page + 1 }}</a>
+            <a href="{{ '/boats/' + next_page|string }}" class="pagination-button">&gt;</a>
         </div>
-
-        <div class="pagination_bar">
-            <a href= "{{ "/boats/"+ (page - 1) | string }}" class="pagination_button"> < </a>
-            <a class="pagination_button" style="background-color: black"> {{page}} </a>
-            <a href="{{ "/boats/"+ (page + 1) | string }}" class="pagination_button" > {{ page + 1 }} </a>
-            <a href="{{ "/boats/"+ (page + 2) | string }}" class="pagination_button"> {{ page + 2 }} </a>
-            <a href="{{ "/boats/"+ (page + 1) | string }}" class="pagination_button"> > </a>
-
-        </div>
-    </div>
-
-
+    </section>
 {% endblock %}
