@@ -1,51 +1,96 @@
-.barItem{
+.barItem {
   display: inline-block;
 }
 
 .logo {
-  width: 45px;
+  width: 60px;
 }
 
 header li {
-  float: left;
-  display: block;
-  padding-left: 8px;
-  padding-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
-.topBar{
-  background-color: #faf9f7;
-  display:flex;
+.topBar {
+  background-color: #1d3557;
+  display: flex;
   justify-content: space-between;
-  align-items:center;
-  padding: 10px;
+  align-items: center;
+  padding: 18px 24px;
+  color: #f8f9fa;
+}
+
+.topBar a,
+.topBar li {
+  color: #f8f9fa;
 }
 
 .formSection {
-  padding: 10px;
-  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.input, .barItem input{
-  height: 35px;
+.login-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.barItem input {
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8f9fa;
+}
+
+.barItem input:focus,
+.barItem input:hover {
+  border-color: #a8dadc;
+  outline: none;
+}
+
+button.signup-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 40px;
   border: none;
-  border-radius: 5px;
-  margin-left: 10px;
+  border-radius: 8px;
+  background: #e63946;
+  color: #f8f9fa;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+button.signup-button:hover {
+  background: #d62839;
+}
+
+.barItem input[type="submit"] {
+  width: 96px;
+  padding: 0 12px;
 }
 
 .mainDiv {
   margin: auto;
   width: 30%;
-
 }
 
-h1{
+h1 {
   text-align: center;
 }
 
-header a{
-  text-decoration:none;
-  color:black;
+header a {
+  text-decoration: none;
+  color: inherit;
 }
 
 /* FOOTER */
@@ -63,23 +108,21 @@ body {
   margin: 0;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  font-size: 14px;
-  background-color: #f4f4f4;
-  align-items: start;
+  font-size: 15px;
+  background-color: #eef2f7;
   min-height: 100vh;
 }
 
 .footer {
   display: flex;
   flex-flow: row wrap;
-  padding: 30px 30px 20px 30px;
-  color: #2f2f2f;
-  background-color: #fff;
-  border-top: 1px solid #e5e5e5;
+  padding: 36px 30px 24px 30px;
+  color: #f8f9fa;
+  background-color: #1d3557;
 }
 
 .footer > * {
-  flex:  1 100%;
+  flex: 1 100%;
 }
 
 .footer__addr {
@@ -90,36 +133,34 @@ body {
 .footer__logo {
   font-family: 'Pacifico', cursive;
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   text-align: left;
+  color: #f8f9fa;
 }
 
-.footer__addr h2 {
+.footer__addr h2,
+.nav__title {
   margin-top: 1.3em;
   font-size: 15px;
-  font-weight: 400;
-}
-
-.nav__title {
-  font-weight: 400;
-  font-size: 15px;
+  font-weight: 600;
+  color: #f8f9fa;
 }
 
 .footer address {
   font-style: normal;
-  color: #999;
+  color: #d8e2ef;
 }
 
 .footer__btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
+  height: 40px;
   max-width: max-content;
-  background-color: rgb(33, 33, 33, 0.07);
-  border-radius: 100px;
-  color: #2f2f2f;
-  line-height: 0;
+  background-color: #457b9d;
+  border-radius: 999px;
+  color: #f8f9fa;
+  line-height: 1;
   margin: 0.6em 0;
   font-size: 1rem;
   padding: 0 1.3em;
@@ -132,15 +173,21 @@ body {
 
 .footer li {
   line-height: 2em;
+  color: #d8e2ef;
 }
 
 .footer a {
   text-decoration: none;
+  color: #a8dadc;
+}
+
+.footer a:hover {
+  color: #f8f9fa;
 }
 
 .footer__nav {
   display: flex;
-	flex-flow: row wrap;
+  flex-flow: row wrap;
 }
 
 .footer__nav > * {
@@ -149,7 +196,7 @@ body {
 }
 
 .nav__ul a {
-  color: #999;
+  color: #d8e2ef;
 }
 
 .nav__ul--extra {
@@ -160,7 +207,7 @@ body {
 .legal {
   display: flex;
   flex-wrap: wrap;
-  color: #999;
+  color: #d8e2ef;
 }
 
 .legal__links {
@@ -169,7 +216,7 @@ body {
 }
 
 .heart {
-  color: #2f2f2f;
+  color: #e63946;
 }
 
 @media screen and (min-width: 24.375em) {

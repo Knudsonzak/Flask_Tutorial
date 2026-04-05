@@ -52,6 +52,46 @@ def create_boat():
         print(error)
         return render_template('boats_create.html', error=error, success=None)
 
+@app.route('/search', methods=['GET'])
+def search_boats():
+    return render_template('boats_search.html', boats=None, error=None, success=None)
+
+@app.route('/search', methods=['POST'])
+def search_boats_request():
+    form = request.form
+    filters = []
+    params = {}
+
+    if form.get('id'):
+        filters.append('id = :id')
+        params['id'] = int(form['id'])
+
+    if form.get('name'):
+        filters.append('name LIKE :name')
+        params['name'] = f"%{form['name']}%"
+
+    if form.get('type'):
+        filters.append('type LIKE :type')
+        params['type'] = f"%{form['type']}%"
+
+    if form.get('owner_id'):
+        filters.append('owner_id = :owner_id')
+        params['owner_id'] = int(form['owner_id'])
+
+    if form.get('rental_price'):
+        filters.append('rental_price = :rental_price')
+        params['rental_price'] = float(form['rental_price'])
+
+    if not filters:
+        return render_template('boats_search.html', boats=None, error='Enter at least one search value.', success=None)
+
+    query = 'SELECT * FROM boats WHERE ' + ' AND '.join(filters)
+    boats = conn.execute(text(query), params).all()
+
+    if not boats:
+        return render_template('boats_search.html', boats=[], error='No boats found matching your search.', success=None)
+
+    return render_template('boats_search.html', boats=boats, error=None, success=f'Found {len(boats)} boat(s).')
 
 if __name__ == '__main__':
     app.run(debug=True)

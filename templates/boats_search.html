@@ -1,0 +1,110 @@
+<style>
+    .body {
+        max-width: 720px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .input_field {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .input_submit {
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .input_submit:hover {
+      background-color: #45a049;
+    }
+
+    .search-results {
+      margin-top: 30px;
+    }
+
+    .boat-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 12px 0;
+      background: #fff;
+    }
+
+    .boat-card h3 {
+      margin: 0 0 10px;
+      color: #1d3557;
+    }
+
+    .boat-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .boat-card li {
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    .results-heading {
+      margin: 24px 0 12px;
+      font-size: 1.2rem;
+      color: #1d3557;
+    }
+</style>
+{% extends "base.html" %}
+{% block body %}
+    <div class="body">
+        {% if error %}
+            <h2 style="color: #c0392b;">{{ error }}</h2>
+        {% endif %}
+
+        {% if success %}
+            <h2 style="color: #2d862d;">{{ success }}</h2>
+        {% endif %}
+
+        <form action="/search" method="POST">
+            <input type="number" name="id" placeholder="ID" class="input_field">
+            <input type="text" name="name" placeholder="Boat name" class="input_field">
+            <input type="text" name="type" placeholder="Boat type" class="input_field">
+            <input type="number" name="owner_id" placeholder="Owner ID" class="input_field">
+            <input type="number" name="rental_price" placeholder="Rental price" class="input_field" step="0.0001">
+            <input type="submit" value="Search" class="input_submit">
+        </form>
+
+        {% if boats is not none %}
+            <div class="search-results">
+                <h3 class="results-heading">Search Results</h3>
+
+                {% if boats | length > 0 %}
+                    {% for boat in boats %}
+                        <div class="boat-card">
+                            <h3>{{ boat['name'] or 'Unnamed boat' }}</h3>
+                            <ul>
+                                <li><strong>ID:</strong> {{ boat['id'] }}</li>
+                                <li><strong>Type:</strong> {{ boat['type'] }}</li>
+                                <li><strong>Owner ID:</strong> {{ boat['owner_id'] }}</li>
+                                <li><strong>Rental price:</strong> {{ boat['rental_price'] }}</li>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No boats matched your search criteria.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
