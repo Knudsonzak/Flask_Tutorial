@@ -9,6 +9,40 @@
             <p>Explore our collection of top-notch fishing boats, from sleek center consoles to spacious pontoons. Each boat is equipped for the ultimate fishing experience on the water.</p>
         </div>
 
+        <div class="filter">
+            <form class="boats-filter-form" method="get" action="{{ '/boats/' + page|string }}">
+                <div class="filter-group">
+                    <label for="type">Boat type</label>
+                    <input id="type" name="type" type="text" value="{{ boat_type }}" placeholder="e.g. pontoon" />
+                </div>
+                <div class="filter-group">
+                    <label for="min_price">Min price</label>
+                    <input id="min_price" name="min_price" type="number" step="0.01" value="{{ min_price }}" placeholder="0.00" />
+                </div>
+                <div class="filter-group">
+                    <label for="max_price">Max price</label>
+                    <input id="max_price" name="max_price" type="number" step="0.01" value="{{ max_price }}" placeholder="0.00" />
+                </div>
+                <input type="hidden" name="order_by" value="{{ order_by }}" />
+                <input type="hidden" name="direction" value="{{ direction }}" />
+                <button type="submit" class="filter-btn">Apply filters</button>
+                <a href="{{ '/boats/1' }}" class="filter-btn reset-btn">Reset</a>
+            </form>
+        </div>
+
+        <div class="filter">
+            {% set filter_prefix = filters_query + '&' if filters_query else '' %}
+            <div class="sort-controls">
+                <span>Sort by:</span>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=id&direction=asc" class="filter-btn">ID High</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=id&direction=desc" class="filter-btn">ID Low</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=name&direction=asc" class="filter-btn">Name A–Z</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=name&direction=desc" class="filter-btn">Name Z–A</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=price&direction=asc" class="filter-btn">Price High</a>
+                <a href="{{ '/boats/' + page|string }}?{{ filter_prefix }}order_by=price&direction=desc" class="filter-btn">Price Low</a>
+            </div>
+        </div>
+
         {% if boats | length > 0 %}
             <div class="boats-grid">
                 {% for boat in boats %}
@@ -28,11 +62,11 @@
         {% endif %}
 
         <div class="pagination-bar">
-            <a href="{{ '/boats/' + prev_page|string }}" class="pagination-button{% if page == 1 %} is-disabled{% endif %}">&lt;</a>
+            <a href="{{ '/boats/' + prev_page|string }}{% if base_query %}?{{ base_query }}{% endif %}" class="pagination-button{% if page == 1 %} is-disabled{% endif %}">&lt;</a>
             <a class="pagination-button is-current">{{ page }}</a>
-            <a href="{{ '/boats/' + next_page|string }}" class="pagination-button">{{ next_page }}</a>
-            <a href="{{ '/boats/' + (next_page + 1)|string }}" class="pagination-button">{{ next_page + 1 }}</a>
-            <a href="{{ '/boats/' + next_page|string }}" class="pagination-button">&gt;</a>
+            <a href="{{ '/boats/' + next_page|string }}{% if base_query %}?{{ base_query }}{% endif %}" class="pagination-button">{{ next_page }}</a>
+            <a href="{{ '/boats/' + (next_page + 1)|string }}{% if base_query %}?{{ base_query }}{% endif %}" class="pagination-button">{{ next_page + 1 }}</a>
+            <a href="{{ '/boats/' + next_page|string }}{% if base_query %}?{{ base_query }}{% endif %}" class="pagination-button">&gt;</a>
         </div>
     </section>
 {% endblock %}

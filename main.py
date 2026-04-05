@@ -26,9 +26,77 @@ def user(name):
 def get_boats(page=1):
     page = int(page)  # request params always come as strings. So type conversion is necessary.
     per_page = 10  # records to show per page
-    boats = conn.execute(text(f"SELECT * FROM boats LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
+
+    order_by = request.args.get('order_by', 'id')
+    direction = request.args.get('direction', 'asc')
+    boat_type = request.args.get('type', '')
+    min_price = request.args.get('min_price', '')
+    max_price = request.args.get('max_price', '')
+
+    allowed_columns = {
+        'id': 'id',
+        'name': 'name',
+        'price': 'rental_price'
+    }
+    allowed_directions = {'asc', 'desc'}
+
+    if order_by not in allowed_columns:
+        order_by = 'id'
+    if direction not in allowed_directions:
+        direction = 'asc'
+
+    filters = []
+    params = {}
+
+    if boat_type:
+        filters.append('type = :type')
+        params['type'] = boat_type
+
+    if min_price:
+        try:
+            params['min_price'] = float(min_price)
+            filters.append('rental_price >= :min_price')
+        except ValueError:
+            min_price = ''
+
+    if max_price:
+        try:
+            params['max_price'] = float(max_price)
+            filters.append('rental_price <= :max_price')
+        except ValueError:
+            max_price = ''
+
+    where_clause = f"WHERE {' AND '.join(filters)}" if filters else ''
+    order_clause = f"ORDER BY {allowed_columns[order_by]} {direction.upper()}"
+    offset = (page - 1) * per_page
+    sql = f"SELECT * FROM boats {where_clause} {order_clause} LIMIT :limit OFFSET :offset"
+    params.update({'limit': per_page, 'offset': offset})
+    boats = conn.execute(text(sql), params).all()
+
+    filter_params = []
+    if boat_type:
+        filter_params.append(f"type={boat_type}")
+    if min_price:
+        filter_params.append(f"min_price={min_price}")
+    if max_price:
+        filter_params.append(f"max_price={max_price}")
+
+    sort_params = [f"order_by={order_by}", f"direction={direction}"]
+    filters_query = '&'.join(filter_params)
+    base_query = '&'.join(filter_params + sort_params)
+
     print(boats)
-    return render_template('boats.html', boats=boats, page=page, per_page=per_page)
+    return render_template('boats.html', boats=boats, page=page, per_page=per_page,
+                           order_by=order_by, direction=direction, base_query=base_query,
+                           filters_query=filters_query, boat_type=boat_type,
+                           min_price=min_price, max_price=max_price)
+
+def filter_boats(boats, boat_type=None, max_price=None):
+    if boat_type:
+        boats = [boat for boat in boats if boat.type == boat_type]
+    if max_price is not None:
+        boats = [boat for boat in boats if boat.rental_price <= max_price]
+    return boats
 
 
 @app.route('/boat/<int:boat_id>')
